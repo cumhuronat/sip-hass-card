@@ -18,7 +18,7 @@ class SipJsCard extends LitElement {
     hass: any;
     renderRoot: any;
     error: any = null;
-    callStatus: string = "Beklemede";
+    callStatus: string = "Bağlanıyor";
     connected: boolean = false;
     socket?: WebSocketInterface;
 
@@ -42,8 +42,6 @@ class SipJsCard extends LitElement {
     static get styles() {
         return css `
         .container {
-            display: flex;
-            flex-direction: row;
             padding: 0 12px 12px 12px;
             width: auto;
           }
@@ -64,6 +62,7 @@ class SipJsCard extends LitElement {
             background-color: #cdcdcd;
           }
           .status{
+            text-align:center
             padding: 10px
           }
         `;
@@ -78,11 +77,16 @@ class SipJsCard extends LitElement {
             <div class="container">
                 <div class="status">${this.callStatus}</div>
                 <button class="button" @click=${this.endCall}>
-                    "Aramayı Sonlandır"}
+                    Aramayı Sonlandır
                 </button>
             </div>
             </ha-card>
             `
+    }
+
+    disconnectedCallback(){
+        super.disconnectedCallback();
+        this.endCall()
     }
 
     firstUpdated() {
@@ -124,8 +128,9 @@ class SipJsCard extends LitElement {
 
     endCall() {
         this.callStatus = "Görüşme Sonlandı"
-        this.sipPhoneSession = null;
-        this.sipPhone?.stop();
+        this.sipPhoneSession?.terminate();
+        this.sipPhone?.unregister();
+        this.sipPhone?.stop()
         this.socket?.disconnect()
         this.navigateToHome()
     }
@@ -168,6 +173,7 @@ class SipJsCard extends LitElement {
         this.sipPhone?.on("registered", () => {
             console.log('SIP-Card Registered with SIP Server');
             this.connected = true;
+            this.callStatus = "Beklemede"
             super.requestUpdate();
             // this.renderRoot.querySelector('.extension').style.color = 'gray';
         });
