@@ -5,8 +5,7 @@ import { EndEvent, PeerConnectionEvent, IncomingEvent, OutgoingEvent, IceCandida
 import {
   LitElement,
   html,
-  css,
-  unsafeCSS
+  css
 } from "lit";
 import { customElement } from "lit/decorators.js";
 
