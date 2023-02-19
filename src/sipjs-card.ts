@@ -128,16 +128,10 @@ class SipJsCard extends LitElement {
 
     endCall() {
         this.callStatus = "Görüşme Sonlandı"
-        try{
-            this.sipPhoneSession?.terminate();
-        }
-        catch(e){
-
-        }
-        
-        this.sipPhone?.unregister();
-        this.sipPhone?.stop()
-        this.socket?.disconnect()
+        this.sipPhone?.terminateSessions()
+        this.sipPhone?.unregister({
+            all: true
+        });
         this.navigateToHome()
     }
 
@@ -227,6 +221,7 @@ class SipJsCard extends LitElement {
 
             this.sipPhoneSession.on("confirmed", (event: IncomingEvent | OutgoingEvent) => {
                 console.log('Call confirmed. Originator: ' + event.originator);
+                this.callStatus = "Arama Aktif"
             });
 
             this.sipPhoneSession.on("failed", (event: EndEvent) =>{
@@ -241,7 +236,7 @@ class SipJsCard extends LitElement {
 
             this.sipPhoneSession.on("accepted", (event: IncomingEvent | OutgoingEvent) => {
                 console.log('Call accepted. Originator: ' + event.originator);
-                this.callStatus = "Arama Aktif"
+                this.callStatus = "Bağlantı Kuruluyor"
             });
 
             var iceCandidateTimeout: NodeJS.Timeout | null = null;
