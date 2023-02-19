@@ -62,7 +62,7 @@ class SipJsCard extends LitElement {
             background-color: #cdcdcd;
           }
           .status{
-            text-align:center
+            text-align:center;
             padding: 10px
           }
         `;
@@ -128,7 +128,13 @@ class SipJsCard extends LitElement {
 
     endCall() {
         this.callStatus = "Görüşme Sonlandı"
-        this.sipPhoneSession?.terminate();
+        try{
+            this.sipPhoneSession?.terminate();
+        }
+        catch(e){
+
+        }
+        
         this.sipPhone?.unregister();
         this.sipPhone?.stop()
         this.socket?.disconnect()
@@ -239,7 +245,7 @@ class SipJsCard extends LitElement {
             });
 
             var iceCandidateTimeout: NodeJS.Timeout | null = null;
-            var iceTimeout = 5;
+            var iceTimeout = 1;
             if (this.config.iceTimeout !== null && this.config.iceTimeout !== undefined)
             {
                 iceTimeout = this.config.iceTimeout;
