@@ -86,7 +86,7 @@ class SipJsCard extends LitElement {
 
     disconnectedCallback(){
         super.disconnectedCallback();
-        this.endCall()
+        //this.endCall()
     }
 
     firstUpdated() {
@@ -236,7 +236,7 @@ class SipJsCard extends LitElement {
 
             this.sipPhoneSession.on("accepted", (event: IncomingEvent | OutgoingEvent) => {
                 console.log('Call accepted. Originator: ' + event.originator);
-                this.callStatus = "Bağlantı Kuruluyor"
+                this.callStatus = "Bağlantı Kuruluyor."
             });
 
             var iceCandidateTimeout: NodeJS.Timeout | null = null;
@@ -311,7 +311,7 @@ class SipJsCard extends LitElement {
                     event.peerconnection.addEventListener("track", handleRemoteTrackEvent);
                     event.peerconnection.addEventListener("icegatheringstatechange", handleIceGatheringStateChangeEvent);
                 });
-                this.callStatus = "Arama Aktif"
+                this.callStatus = "Bağlantı Kuruluyor.."
                 this.sipPhoneSession.answer(this.sipCallOptions);
             }
             else if (this.sipPhoneSession.direction === 'outgoing') {
